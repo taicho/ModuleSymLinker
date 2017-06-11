@@ -22,6 +22,11 @@ function getArgs() {
 			case "--autoscan":
 				result["autoscan"] = true;
 				continue;
+			case "--help" || "?":
+				console.log("options:");
+				console.log("--autoscan:  The default option. This will scan for package.json in the current directory and create the sym link and corresponding directory in NodeModuleArchive.");
+				console.log("--destination: This allows you to specify an absolute path of where you want your \"NodeModuleArchive\" to exist.");				
+				process.exit();
 		}
 	}
 	return result;

@@ -1,5 +1,5 @@
 {
-  "name": "modulesimlinker",
+  "name": "modulesymlinker",
   "version": "1.0.0",
   "description": "A tool for easily creating a sym link to a node_modules folder of your choosing. Originally created for use with Google Drive.",
   "main": "index.js",
@@ -8,9 +8,11 @@
   },
   "author": "Azad Ratzki",
   "license": "MIT",
-  "bin" :{ "nodemodulesymlinker":"./index.js"  },
+  "bin": {
+    "modulesymlinker": "./index.js"
+  },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/taicho/ModuleSymLinker.git"
   }
 }
