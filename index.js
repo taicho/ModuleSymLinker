@@ -24,7 +24,7 @@ function getArgs() {
 				continue;
 			case "--help" || "?":
 				console.log("options:");
-				console.log("--autoscan:  The default option. This will scan for package.json in the current directory and create the sym link and corresponding directory in NodeModuleArchive.");
+				console.log("--autoscan: This will scan for package.json in the current directory and any subdirectories creating the sym link and corresponding directories in NodeModuleArchive along the way.");
 				console.log("--destination: This allows you to specify an absolute path of where you want your \"NodeModuleArchive\" to exist.");				
 				process.exit();
 		}
@@ -57,7 +57,7 @@ function getAllPackagePaths(startDirectory, fileArray)
 function mkdirRecursive(targetDir) {
 	targetDir.split(path.sep).forEach((dir, index, splits) => {
 		const parent = splits.slice(0, index).join(path.sep);
-		const dirPath = path.resolve(parent, dir);
+		const dirPath = path.resolve('/' + parent,dir);		
 		if (!fs.existsSync(dirPath)) {
 			fs.mkdirSync(dirPath);
 		}
@@ -65,17 +65,16 @@ function mkdirRecursive(targetDir) {
 }
 
 
-function createLink(targetDirectory, sourceDirectory) {
-	sourceDirectory = path.join(sourceDirectory, 'node_modules');
-	
-	if (!fs.existsSync(sourceDirectory)) {
-		mkdirRecursive(sourceDirectory);
-		console.log(`Created ${sourceDirectory}.`);
+function createLink(symLinkDirectory, nodeModulesDirectory) {
+	nodeModulesDirectory = path.join(nodeModulesDirectory, 'node_modules');
+	if (!fs.existsSync(nodeModulesDirectory)) {
+		mkdirRecursive(nodeModulesDirectory);
+		console.log(`Created ${nodeModulesDirectory}.`);
 	}
-	const resolvedTargetDirectory = path.resolve(targetDirectory)
-	targetDirectory = path.join(resolvedTargetDirectory, "node_modules");
-	if (!fs.existsSync(targetDirectory)) {
-		fs.symlinkSync(sourceDirectory, targetDirectory, 'dir');
+	const resolvedTargetDirectory = path.resolve(symLinkDirectory)
+	symLinkDirectory = path.join(resolvedTargetDirectory, "node_modules");
+	if (!fs.existsSync(symLinkDirectory)) {
+		fs.symlinkSync(nodeModulesDirectory, symLinkDirectory, 'dir');
 		console.log(`Sym Link Created in ${resolvedTargetDirectory}`);
 	} else {
 		console.log(`node_modules already exists in ${resolvedTargetDirectory}.`);
